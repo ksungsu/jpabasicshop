@@ -2,6 +2,8 @@ package jpabasicbook.jpabasicshop.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="ORDERS")
@@ -15,11 +17,25 @@ public class Order {
     @JoinColumn(name="MEMBER_ID")
     private Member member;
 
+    @OneToMany(mappedBy="order")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderSatus status;
 
+    @OneToOne
+    @JoinColumn(name = "DELIVERY_ID")
+    private Delivery delivery;
 
     public Long getId() {
         return id;
@@ -51,5 +67,10 @@ public class Order {
 
     public void setStatus(OrderSatus status) {
         this.status = status;
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 }

@@ -4,8 +4,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
-public class Category {
+public class Category extends BaseEntity{
 
     @Id @GeneratedValue
     private Long id;
@@ -14,7 +16,7 @@ public class Category {
 
     //JPA는 자기 자신을 매핑할 수도 있다.
     //카테고리를 펼쳤을 때 목록이 출력되는 매핑
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="PARENT_ID")
     private Category parent;
 
